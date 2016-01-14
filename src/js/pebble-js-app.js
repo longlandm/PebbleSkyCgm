@@ -30,7 +30,8 @@ function fetchCgmData() {
             
              break;
 
-        case "Share":
+        case "US_Share":
+        case "Non_US_Share":
             console.log("Share data to be loaded");
             subscribeBy(opts.accountName);
             share(opts);
@@ -475,18 +476,43 @@ function share(options) {
         options.unit = "mmol/L";
     }
     options.vibe = parseInt(options.vibe, 10);
+    
+    var server = getShareServerName(options);
+  
     var defaults = {
         "applicationId": "d89443d2-327c-4a6f-89e5-496bbb0317db",
         "agent": "Dexcom Share/3.0.2.11 CFNetwork/711.2.23 Darwin/14.0.0",
-        login: 'https://share1.dexcom.com/ShareWebServices/Services/General/LoginPublisherAccountByName',
+        login: 'https://' + server + '/ShareWebServices/Services/General/LoginPublisherAccountByName',
+      //  login: 'https://share1.dexcom.com/ShareWebServices/Services/General/LoginPublisherAccountByName',
         accept: 'application/json',
         'content-type': 'application/json',
-        LatestGlucose: "https://share1.dexcom.com/ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues"
+        LatestGlucose: "https://" + server + "/ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues"
+      //  LatestGlucose: "https://share1.dexcom.com/ShareWebServices/Services/Publisher/ReadPublisherLatestGlucoseValues"
     };
-
+   // console.log("Login: " + defaults.login + " Latest Glucose: " + defaults.LatestGlucose);
     authenticateShare(options, defaults);
 }
-
+function getShareServerName(options)
+{
+  var mode = options.mode.toLowerCase();
+  var server = "";
+  
+  if(mode == "us_share")
+    {
+      server = "share1.dexcom.com";
+    }
+  else if(mode == "non_us_share")
+    {
+      server = "shareous1.dexcom.com";
+    }
+  else
+    {
+      console.log("Option not supported");
+      server = "";
+    }
+  console.log("Server to use:" + server);
+  return server;
+}
 function authenticateShare(options, defaults) {   
  
     var body = {
