@@ -1097,7 +1097,9 @@ APP_LOG(APP_LOG_LEVEL_DEBUG, "APPMSG IN DROP ERR, CODE: %i RES: %s",
 } // end inbox_dropped_handler_cgm
 
 void outbox_failed_handler_cgm(DictionaryIterator *failed, AppMessageResult appmsg_outfail_error, void *context) {
-// outgoing appmessage send failed to deliver to Pebble
+// outgoin
+  
+   //appmessage send failed to deliver to Pebble
   // have never seen handler get called, think because AppSync is always used
   // just set log now to avoid crash, if see log then can go back to old handler
    DictionaryIterator *iter = NULL;
@@ -1802,7 +1804,7 @@ if (bg_layer_chart != NULL) { text_layer_set_text(bg_layer_chart, "ERR");
     #ifdef PBL_PLATFORM_CHALK   
      set_container_image(&specialvalue_bitmap,icon_layer,SPECIAL_VALUE_ICONS[HOURGLASS_ICON_INDX], GPoint(76, 52));
    #else
-     set_container_image(&specialvalue_bitmap,icon_layer,SPECIAL_VALUE_ICONS[HOURGLASS_ICON_INDX], GPoint(57, 50));
+     set_container_image(&specialvalue_bitmap,icon_layer,SPECIAL_VALUE_ICONS[HOURGLASS_ICON_INDX], GPoint(57, 57));
    #endif     
      create_update_bitmap(&icon_bitmap_chart, icon_layer_chart, SM_SPECIAL_VALUE_ICONS[SM_HOURGLASS_ICON_INDX]);
    layer_mark_dirty(bitmap_layer_get_layer(icon_layer));
@@ -2240,7 +2242,7 @@ const uint8_t BGDELTA_FORMATTED_SIZE = 14;
   // VARIABLES
   static char formatted_bg_delta[14] = {0};
   
-  //char delta_label_buffer[14] = {0};
+  char delta_label_buffer[14] = {0}; //added back for delta
 
 // CODE START
 // check bluetooth connection
@@ -2618,7 +2620,7 @@ const uint8_t VALUE_MSGSTR_SIZE = 25;
 switch (key) {
 
 case CGM_ICON_KEY:;
-      //APP_LOG(APP_LOG_LEVEL_INFO, "SYNC TUPLE: ICON ARROW");
+     // APP_LOG(APP_LOG_LEVEL_INFO, "SYNC TUPLE: ICON ARROW");
       strncpy(current_icon, new_tuple->value->cstring, ICON_MSGSTR_SIZE);
       //APP_LOG(APP_LOG_LEVEL_DEBUG, "SYNC TUPLE, ICON VALUE: %s ", current_icon);
       load_icon();
@@ -2627,7 +2629,7 @@ case CGM_ICON_KEY:;
 case CGM_BG_KEY:;
  //APP_LOG(APP_LOG_LEVEL_INFO, "SYNC TUPLE: BG CURRENT");
       strncpy(last_bg, new_tuple->value->cstring, BG_MSGSTR_SIZE);
- //APP_LOG(APP_LOG_LEVEL_DEBUG, "SYNC TUPLE, BG VALUE: %s ", last_bg);
+// APP_LOG(APP_LOG_LEVEL_DEBUG, "SYNC TUPLE, BG VALUE: %s ", last_bg);
       load_bg();
       break; // break for CGM_BG_KEY
 
@@ -2836,6 +2838,9 @@ for (uint8_t n = 0; n < MAX_BG_ARRAY_SIZE; n += 1) {
       //APP_LOG(APP_LOG_LEVEL_DEBUG, "SYNC TUPLE, NOISE: %i ", current_noise_value);
       load_noise();
       break; // break for CGM_NOIZ_KEY
+  default:
+        APP_LOG(APP_LOG_LEVEL_DEBUG, "new_tuple->value->cstring: %s" ,new_tuple->value->cstring);
+        break;
   }  // end switch(key)
 
       if (canvas_layer_chart) {
@@ -3604,7 +3609,7 @@ static void init_cgm(void) {
   
   //APP_LOG(APP_LOG_LEVEL_INFO, "INIT CODE, ABOUT TO CALL APP MSG OPEN"); 
   //app_message_open(app_message_inbox_size_maximum(), app_message_outbox_size_maximum());
-    app_message_open(300, 300);
+    app_message_open(600, 600); //Kate changed from 300, 300
 
 //  APP_LOG(APP_LOG_LEVEL_INFO, "INIT CODE, APP MSG OPEN DONE");
   
