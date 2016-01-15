@@ -1,6 +1,5 @@
 
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,7 +31,16 @@
             </select>
           </form>
         </div>
-        <form name="Share" id="Share" style="display:none">
+        <form name="US_Share" id="US_Share" style="display:none">
+          <label for="accountName">Share Username: </label>
+          <input type="text" name="accountName" id="accountName" value="" autocapitalize="off"
+                autocorrect="off"/>
+          <label for="password">Share Password: </label>
+          <input type="password" name="password" id="password" value="" />
+          <label for="remember">Remember Password</label>
+          <input type="checkbox" name="remember" id="remember" />
+        </form>
+        <form name="Non_US_Share" id="Non_US_Share" style="display:none">
           <label for="accountName">Share Username: </label>
           <input type="text" name="accountName" id="accountName" value="" autocapitalize="off"
                 autocorrect="off"/>
@@ -63,7 +71,6 @@ function clearFunction() {
 		<legend><strong>Choose mg/dl or mmol:</strong></legend>
 						<input name="tipo_cadastro" type="radio" id="mgdl_form"" onchange="onchange_handler(this, 'mgdl');" onClick="clearFunction()" onmouseup="onchange_handler(this, 'mgdl');" value="mgdl_form"/>
 						<label for="mgdl_form">mg/dl</label>
-
 						<input type="radio" name="tipo_cadastro" id="mmol_form" value="mmol_form" !important" onClick="myFunction()" onchange="onchange_handler(this, 'mmol');" onmouseup="onchange_handler(this, //'mmol');">
 						<label for="mmol_form">mmol</label>
 	</fieldset>
@@ -261,7 +268,6 @@ if (console && console.log && console.log.call) {
           }
         };
       }
-
       $('#status').text('initializing');
       function saveOptions() {
 		   
@@ -313,7 +319,7 @@ if (console && console.log && console.log.call) {
 		_raw = window.localStorage && window.localStorage.cgmOpts
             ? window.localStorage.cgmOpts : null;
         opts = (_raw && _raw.length && _raw.length > 5 ? JSON.parse(_raw) : { });
-		$("#mode").val(opts && opts.mode ? opts.mode : '');
+		$("#mode").val(opts && opts.mode ? opts.mode : '').selectmenu("refresh");
 		$("#endpoint").val(opts && opts.endpoint ? opts.endpoint : '');
 		$("#accountName").val(opts && opts.accountName ? opts.accountName : '');
 		$("#password").val(opts && opts.password ? opts.password : '');
@@ -347,7 +353,7 @@ if (console && console.log && console.log.call) {
 			opts = (_raw && _raw.length && _raw.length > 5 ? JSON.parse(_raw) : { });
 			$('#status').text(['has opts', JSON.stringify(opts)].join(' '));
 			console.log("opts", JSON.stringify(opts));
-			$("#mode").val(opts && opts.mode ? opts.mode : '');
+			$("mode").val(opts && opts.mode ? opts.mode : '').selectmenu("refresh");
 			$("#endpoint").val(opts && opts.endpoint ? opts.endpoint : '');
 			$("#accountName").val(opts && opts.accountName ? opts.accountName : '');
 			$("#password").val(opts && opts.password ? opts.password : '');
@@ -387,7 +393,6 @@ if (console && console.log && console.log.call) {
         var vars = query.split('&');
         for (var i = 0; i < vars.length; i++) {
           var pair = vars[i].split('=');
-
           // If the query variable parameter is found, decode it to use and return it for use
           if (pair[0] === variable) {
             return decodeURIComponent(pair[1]);
@@ -395,7 +400,6 @@ if (console && console.log && console.log.call) {
         }
         return defaultValue || false;
       }
-
       $().ready(function() {
         if (window.location.hash.indexOf("debug") > -1) {
           $('#status').removeClass('hidden');
@@ -404,13 +408,11 @@ if (console && console.log && console.log.call) {
         $('#status').text('setting up events');
 		//localStorage.clear();
 		
-
         $("#b-cancel").click(function() {
           console.log("Cancel");
           $('#status').text('canceling');
           document.location = "pebblejs://close";
         });
-
         $("#b-submit").click(function() {
           console.log("Submit");
 		//var return_to = getQueryParam('return_to', 'pebblejs://close#');
@@ -419,11 +421,9 @@ if (console && console.log && console.log.call) {
         //document.location = location;
 		var return_to = getQueryParam('return_to', 'pebblejs://close#');
         document.location = return_to + encodeURIComponent(JSON.stringify(saveOptions()));
-
 		
 	//	location.href = "pebblejs://close#" + encodeURIComponent(JSON.stringify(saveOptions));
           $('#status').text('submitting');
-
         //  var location = "pebblejs://close#" + encodeURIComponent(JSON.stringify(saveOptions()));
        //   console.log("Warping to: " + location);
       //    $('#status').text('closing');
@@ -449,7 +449,6 @@ function onchange_handler(obj, id) {
         document.getElementById(other_id + '_form_fields').style.display = 'block';
     }
 }
-
 </script>
 </body>
 </html>
